@@ -1,0 +1,114 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+  background: #dedbd7;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; background: #dedbd7; }
+body { margin: 0; background: #dedbd7; }
+button { font: inherit; }
+
+.document {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 0 24px;
+}
+
+.page {
+  position: relative;
+  width: 100%;
+  margin: 0 0 12px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, .12);
+}
+
+.page > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.hotspot {
+  position: absolute;
+  z-index: 2;
+  left: var(--x);
+  top: 80.49%;
+  width: 9.5%;
+  aspect-ratio: 1;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.hotspot::after {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  transition: inset .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.hotspot:hover::after,
+.hotspot:focus-visible::after {
+  inset: 14%;
+  border-color: rgba(255, 255, 255, .9);
+  box-shadow: 0 0 0 2px var(--tone);
+}
+
+.hotspot:focus-visible { outline: none; }
+
+.hotspot[aria-pressed="true"]::after {
+  inset: 8%;
+  border-color: rgba(255, 255, 255, .95);
+  box-shadow: 0 0 0 3px var(--tone), 0 0 20px var(--tone);
+  animation: playing 1.7s ease-in-out infinite;
+}
+
+@keyframes playing {
+  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--tone) 75%, transparent), 0 0 28px var(--tone); }
+}
+
+.player-status {
+  position: fixed;
+  z-index: 10;
+  left: 50%;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: calc(100vw - 28px);
+  padding: 10px 15px;
+  transform: translateX(-50%);
+  color: white;
+  background: rgba(43, 39, 36, .9);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 999px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .24);
+  backdrop-filter: blur(12px);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.player-status[hidden] { display: none; }
+.status-dot { width: 7px; height: 7px; flex: 0 0 auto; background: #c69a73; border-radius: 50%; }
+.status-text { overflow: hidden; text-overflow: ellipsis; }
+
+@media (min-width: 901px) {
+  .document { padding-top: 24px; }
+  .page { border-radius: 2px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hotspot[aria-pressed="true"]::after { animation: none; }
+}
