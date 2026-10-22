@@ -7,7 +7,20 @@
 * { box-sizing: border-box; }
 html { min-width: 320px; background: #dedbd7; }
 body { margin: 0; background: #dedbd7; }
+body.modal-open { overflow: hidden; }
 button { font: inherit; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 .document {
   width: 100%;
@@ -59,6 +72,39 @@ button { font: inherit; }
   transition: inset .18s ease, border-color .18s ease, box-shadow .18s ease;
 }
 
+.hotspot::before {
+  content: "";
+  position: absolute;
+  inset: 21%;
+  border: 2px solid var(--tone);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.note-pulse {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: 62%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.note-pulse i {
+  position: absolute;
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--tone) 86%, white);
+  border-radius: 50%;
+  opacity: .28;
+}
+
+.note-pulse i:nth-child(1) { transform: scale(1.04); opacity: .5; }
+.note-pulse i:nth-child(2) { transform: scale(1.18); opacity: .3; }
+.note-pulse i:nth-child(3) { transform: scale(1.32); opacity: .16; }
+
 .hotspot:hover::after,
 .hotspot:focus-visible::after {
   inset: 14%;
@@ -69,15 +115,134 @@ button { font: inherit; }
 .hotspot:focus-visible { outline: none; }
 
 .hotspot[aria-pressed="true"]::after {
-  inset: 8%;
-  border-color: rgba(255, 255, 255, .95);
-  box-shadow: 0 0 0 3px var(--tone), 0 0 20px var(--tone);
-  animation: playing 1.7s ease-in-out infinite;
+  inset: 17%;
+  border-color: rgba(255, 255, 255, .82);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tone) 78%, transparent);
 }
 
-@keyframes playing {
-  50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--tone) 75%, transparent), 0 0 28px var(--tone); }
+.hotspot[aria-pressed="true"] .note-pulse i,
+.hotspot:hover .note-pulse i,
+.hotspot:focus-visible .note-pulse i,
+.hotspot.is-pressing .note-pulse i {
+  animation: note-wave 1.65s cubic-bezier(.18, .62, .32, 1) infinite;
 }
+
+.hotspot[aria-pressed="true"] .note-pulse i:nth-child(2),
+.hotspot:hover .note-pulse i:nth-child(2),
+.hotspot:focus-visible .note-pulse i:nth-child(2),
+.hotspot.is-pressing .note-pulse i:nth-child(2) { animation-delay: .28s; }
+
+.hotspot[aria-pressed="true"] .note-pulse i:nth-child(3),
+.hotspot:hover .note-pulse i:nth-child(3),
+.hotspot:focus-visible .note-pulse i:nth-child(3),
+.hotspot.is-pressing .note-pulse i:nth-child(3) { animation-delay: .56s; }
+
+@keyframes note-wave {
+  0% { transform: scale(1.02); opacity: .68; }
+  72%, 100% { transform: scale(1.72); opacity: 0; }
+}
+
+.marker-copy {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.marker-reveal {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.marker-line {
+  fill: none;
+  stroke: rgba(241, 204, 116, .38);
+  stroke-width: 17;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: var(--path-length) var(--path-length);
+  stroke-dashoffset: var(--path-length);
+  opacity: 0;
+  mix-blend-mode: multiply;
+  transition:
+    stroke-dashoffset 1.8s cubic-bezier(.25, 1, .5, 1),
+    opacity .18s ease;
+}
+
+.marker-line-one { transition-delay: .1s, .1s; }
+.marker-line-two { transition-delay: 1.5s, 1.5s; }
+
+.marker-copy.active .marker-line {
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+.marker-copy.resetting .marker-line { transition: none; }
+
+.marker-trigger {
+  position: absolute;
+  left: 20%;
+  top: 84.8%;
+  width: 71%;
+  height: 4.5%;
+  pointer-events: none;
+}
+
+.guide-modal {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(28, 25, 22, .58);
+  backdrop-filter: blur(7px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+
+.guide-modal[hidden] { display: none; }
+.guide-modal.is-visible { opacity: 1; pointer-events: auto; }
+
+.guide-dialog {
+  position: relative;
+  width: min(460px, 92vw);
+  max-height: 88vh;
+  opacity: 0;
+  transform: scale(.95);
+  transition:
+    opacity .4s ease,
+    transform .4s ease;
+  filter: drop-shadow(0 22px 55px rgba(0, 0, 0, .28));
+}
+
+.guide-modal.is-visible .guide-dialog { opacity: 1; transform: translateY(0) scale(1); }
+.guide-dialog img { display: block; width: 100%; max-height: 88vh; object-fit: contain; border-radius: 2px; }
+
+.guide-close {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0 0 3px;
+  color: #7e5b38;
+  background: rgba(255, 255, 255, .91);
+  border: 1px solid rgba(154, 111, 67, .4);
+  border-radius: 50%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .13);
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.guide-close:focus-visible { outline: 2px solid #9a6f43; outline-offset: 3px; }
 
 .player-status {
   position: fixed;
@@ -110,5 +275,8 @@ button { font: inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hotspot[aria-pressed="true"]::after { animation: none; }
+  .hotspot .note-pulse i { animation: none !important; }
+  .marker-line { transition: none; }
+  .marker-copy.active .marker-line { stroke-dashoffset: 0; opacity: 1; }
+  .guide-modal, .guide-dialog { transition: none; }
 }

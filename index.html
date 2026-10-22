@@ -9,7 +9,7 @@
   <meta property="og:title" content="발몽 메뉴">
   <meta property="og:description" content="VALMONT 스파 메뉴와 제품별 음악을 확인하세요.">
   <title>발몽 메뉴</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=13">
 </head>
 <body>
   <main class="document" aria-label="VALMONT SPA BOOST 안내서">
@@ -24,25 +24,45 @@
     <section class="page music-page" aria-label="SPA BOOST 음악 선택">
       <img src="assets/valmont-page-3.webp" alt="VALMONT SPA BOOST 리추얼과 음악 안내">
 
-      <button class="hotspot" style="--x:27.42%; --tone:#a9c9ef" data-title="Hydration of Bisses" aria-label="하이드레이션 음악 재생" aria-pressed="false"></button>
-      <button class="hotspot" style="--x:41.43%; --tone:#efd179" data-title="Vitality of the Glaciers" aria-label="바이탈리티 음악 재생" aria-pressed="false"></button>
-      <button class="hotspot" style="--x:55.44%; --tone:#e5a0b2" data-title="Luminosity of Ice" aria-label="루미너시티 음악 재생" aria-pressed="false"></button>
-      <button class="hotspot" style="--x:69.56%; --tone:#9fd4ac" data-title="Lift from the Peaks" aria-label="리프팅 음악 재생" aria-pressed="false"></button>
-      <button class="hotspot" style="--x:83.57%; --tone:#aaa7dc" data-title="Firmness of the Hills" aria-label="펌니스 음악 재생" aria-pressed="false"></button>
+      <div class="marker-copy" aria-label="음악 제작 안내">
+        <svg class="marker-reveal" viewBox="0 0 1323 1871" preserveAspectRatio="none" aria-hidden="true">
+          <path class="marker-line marker-line-one" d="M 542 1626 C 635 1623, 760 1630, 925 1625" />
+          <path class="marker-line marker-line-two" d="M 382 1658 C 565 1654, 826 1663, 1084 1657" />
+        </svg>
+      </div>
+      <span class="marker-trigger" aria-hidden="true"></span>
 
-      <audio preload="metadata" src="audio/01_Hydration_Bisses_15s_fade.mp3"></audio>
-      <audio preload="metadata" src="audio/02_Vitality_Glaciers_15s_fade.mp3"></audio>
-      <audio preload="metadata" src="audio/03_Luminosity_Ice_15s_fade.mp3"></audio>
-      <audio preload="metadata" src="audio/04_Lifting_Peaks_15s_fade.mp3"></audio>
-      <audio preload="metadata" src="audio/05_Firmness_Hills_15s_fade.mp3"></audio>
+      <button class="hotspot" style="--x:27.42%; --tone:#a9c9ef" data-title="Hydration of Bisses" aria-label="하이드레이션 음악 재생" aria-pressed="false"><span class="note-pulse" aria-hidden="true"><i></i><i></i><i></i></span></button>
+      <button class="hotspot" style="--x:41.43%; --tone:#efd179" data-title="Vitality of the Glaciers" aria-label="바이탈리티 음악 재생" aria-pressed="false"><span class="note-pulse" aria-hidden="true"><i></i><i></i><i></i></span></button>
+      <button class="hotspot" style="--x:55.44%; --tone:#e5a0b2" data-title="Luminosity of Ice" aria-label="루미너시티 음악 재생" aria-pressed="false"><span class="note-pulse" aria-hidden="true"><i></i><i></i><i></i></span></button>
+      <button class="hotspot" style="--x:69.56%; --tone:#9fd4ac" data-title="Lift from the Peaks" aria-label="리프팅 음악 재생" aria-pressed="false"><span class="note-pulse" aria-hidden="true"><i></i><i></i><i></i></span></button>
+      <button class="hotspot" style="--x:83.57%; --tone:#aaa7dc" data-title="Firmness of the Hills" aria-label="펌니스 음악 재생" aria-pressed="false"><span class="note-pulse" aria-hidden="true"><i></i><i></i><i></i></span></button>
+
+      <audio preload="metadata" src="audio/01_Hydration_Bisses_20s_fade.mp3"></audio>
+      <audio preload="metadata" src="audio/02_Vitality_Glaciers_20s_fade.mp3"></audio>
+      <audio preload="metadata" src="audio/03_Luminosity_Ice_20s_fade.mp3"></audio>
+      <audio preload="metadata" src="audio/04_Lifting_Peaks_20s_fade.mp3"></audio>
+      <audio preload="metadata" src="audio/05_Firmness_Hills_20s_fade.mp3"></audio>
+    </section>
+
+    <section class="page" aria-label="인텐스 리제너레이팅 마스크 안내">
+      <img src="assets/regenerating-mask-pop.jpg" alt="메디컬 시술 후 피부 회복을 위한 98% 네이티브 콜라겐 마스크 안내">
     </section>
   </main>
+
+  <div class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guide-title" hidden>
+    <div class="guide-dialog">
+      <h2 id="guide-title" class="visually-hidden">음악 미리듣기 안내</h2>
+      <button class="guide-close" type="button" aria-label="안내 닫기">×</button>
+      <img src="assets/music-guide-card.png" alt="각 테크닉 아래의 MUSIC 버튼을 누르면 테크닉에 어울리는 음악을 미리 들어볼 수 있습니다. 한 번 누르면 재생, 다시 누르면 일시정지됩니다.">
+    </div>
+  </div>
 
   <div class="player-status" role="status" aria-live="polite" hidden>
     <span class="status-dot"></span>
     <span class="status-text"></span>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=13"></script>
 </body>
 </html>
